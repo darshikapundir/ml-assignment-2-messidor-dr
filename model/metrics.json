@@ -1,0 +1,170 @@
+{
+  "dataset": {
+    "name": "Diabetic Retinopathy Debrecen (Messidor features)",
+    "source": "UCI Machine Learning Repository, dataset 329",
+    "rows": 1151,
+    "features": 19,
+    "class_counts": {
+      "0": 540,
+      "1": 611
+    },
+    "ma_count_correlation_0_5_vs_1_0": 0.8596
+  },
+  "split": {
+    "test_size": 0.2,
+    "random_state": 42,
+    "stratified": true,
+    "n_train": 920,
+    "n_test": 231,
+    "majority_class_on_train": 1,
+    "majority_accuracy_on_test": 0.5325
+  },
+  "positive_class": 1,
+  "metric_definition": "Accuracy and MCC use both classes. AUC uses the predicted probability of class 1. Precision, recall, and F1 are for class 1 (DR signs present).",
+  "winner_by_test_auc": "Logistic Regression",
+  "logistic_top_scaled_coefficients": [
+    {
+      "feature": "ma_count_alpha_0_5",
+      "scaled_coefficient": 13.017590502642642
+    },
+    {
+      "feature": "ma_count_alpha_0_7",
+      "scaled_coefficient": -6.462449320020413
+    },
+    {
+      "feature": "ma_count_alpha_0_8",
+      "scaled_coefficient": -3.068216220323307
+    },
+    {
+      "feature": "exudate_norm_7",
+      "scaled_coefficient": 2.5834673443531537
+    },
+    {
+      "feature": "exudate_norm_6",
+      "scaled_coefficient": -1.6613384055982245
+    },
+    {
+      "feature": "ma_count_alpha_0_6",
+      "scaled_coefficient": -1.3263324373085024
+    }
+  ],
+  "tree_top_importances": [
+    {
+      "feature": "exudate_norm_7",
+      "importance": 0.357873108783954
+    },
+    {
+      "feature": "ma_count_alpha_0_5",
+      "importance": 0.32126657806307185
+    },
+    {
+      "feature": "exudate_norm_3",
+      "importance": 0.12503373869000783
+    },
+    {
+      "feature": "exudate_norm_1",
+      "importance": 0.1137806249888579
+    },
+    {
+      "feature": "exudate_norm_8",
+      "importance": 0.03792754198236718
+    },
+    {
+      "feature": "ma_count_alpha_0_9",
+      "importance": 0.02855237503344009
+    }
+  ],
+  "models": [
+    {
+      "key": "logistic_regression",
+      "label": "Logistic Regression",
+      "best_params": {
+        "model__C": 10.0,
+        "model__class_weight": null
+      },
+      "cv_auc": 0.8162869096083775,
+      "fit_seconds": 0.17,
+      "test_metrics": {
+        "Accuracy": 0.7575757575757576,
+        "AUC": 0.8579494128274616,
+        "Precision": 0.8526315789473684,
+        "Recall": 0.6585365853658537,
+        "F1": 0.7431192660550459,
+        "MCC": 0.5363057523323146
+      }
+    },
+    {
+      "key": "decision_tree",
+      "label": "Decision Tree",
+      "best_params": {
+        "model__class_weight": null,
+        "model__max_depth": 4,
+        "model__min_samples_leaf": 8
+      },
+      "cv_auc": 0.685731926762388,
+      "fit_seconds": 0.27,
+      "test_metrics": {
+        "Accuracy": 0.6320346320346321,
+        "AUC": 0.632151460403493,
+        "Precision": 0.8064516129032258,
+        "Recall": 0.4065040650406504,
+        "F1": 0.5405405405405406,
+        "MCC": 0.3326023919600927
+      }
+    },
+    {
+      "key": "knn",
+      "label": "KNN",
+      "best_params": {
+        "model__n_neighbors": 15,
+        "model__weights": "distance"
+      },
+      "cv_auc": 0.7009739961924468,
+      "fit_seconds": 0.4,
+      "test_metrics": {
+        "Accuracy": 0.6190476190476191,
+        "AUC": 0.6926377597109304,
+        "Precision": 0.6666666666666666,
+        "Recall": 0.5691056910569106,
+        "F1": 0.6140350877192983,
+        "MCC": 0.24553117227608656
+      }
+    },
+    {
+      "key": "naive_bayes",
+      "label": "Naive Bayes",
+      "best_params": {
+        "model__var_smoothing": 1e-09
+      },
+      "cv_auc": 0.6864914268189934,
+      "fit_seconds": 0.04,
+      "test_metrics": {
+        "Accuracy": 0.6493506493506493,
+        "AUC": 0.7178184281842819,
+        "Precision": 0.6544117647058824,
+        "Recall": 0.7235772357723578,
+        "F1": 0.6872586872586872,
+        "MCC": 0.29242632183106987
+      }
+    },
+    {
+      "key": "svm",
+      "label": "Support Vector Machine",
+      "best_params": {
+        "model__C": 8.0,
+        "model__class_weight": "balanced",
+        "model__gamma": "scale"
+      },
+      "cv_auc": 0.799400499623952,
+      "fit_seconds": 0.38,
+      "test_metrics": {
+        "Accuracy": 0.7012987012987013,
+        "AUC": 0.8066094549834388,
+        "Precision": 0.78125,
+        "Recall": 0.6097560975609756,
+        "F1": 0.684931506849315,
+        "MCC": 0.42047100190708225
+      }
+    }
+  ]
+}
