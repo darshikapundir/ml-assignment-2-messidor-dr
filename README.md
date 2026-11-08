@@ -90,28 +90,3 @@ Settings selected on the training folds:
 | Naive Bayes | Gaussian NB with `var_smoothing = 1e-9`. CV AUC 0.6865. Test accuracy 0.6494, AUC 0.7178, precision 0.6544, recall 0.7236, F1 0.6873, MCC 0.2924. Recall is the best of the five. The independence assumption is false here, because the six microaneurysm counts are the same lesions read at different thresholds. The model therefore flags more positive images, and more of those flags are wrong: precision drops from 0.8526 (logistic regression) to 0.6544. The recall gain over logistic regression is real but small (0.7236 vs 0.6585). |
 | Support Vector Machine | RBF kernel, `C = 8`, `gamma = scale`, balanced class weights. CV AUC 0.7994, second only to logistic regression. Test AUC 0.8066, accuracy 0.7013, precision 0.7812, recall 0.6098, F1 0.6849, MCC 0.4205. Balancing the classes did not raise recall above the unweighted logistic model (0.6098 vs 0.6585). The RBF kernel also did not beat the linear score. On these 19 measurements the extra flexibility is not paying for itself. |
 | Overall, Winner for your dataset? | Logistic regression. It leads on accuracy, AUC, precision, F1, and MCC, and its CV AUC and test AUC agree. Naive Bayes wins recall only, at a large cost in precision. The default model in the Streamlit app is logistic regression. |
-
-## Streamlit app
-
-Deploy `app.py` from this repository on Streamlit Community Cloud.
-
-The running app:
-
-1. Accepts a test CSV upload. If nothing is uploaded, it scores the bundled `test_data.csv`.
-2. Offers a model dropdown for all five saved classifiers.
-3. Shows accuracy, AUC, precision, recall, F1, and MCC for the selected model, and a comparison table for all five, computed on the uploaded file.
-4. Shows a confusion matrix and a classification report for the selected model.
-
-The uploaded file must contain the 19 feature columns and `dr_signs`. The app loads the `.joblib` pipeline and calls `predict` / `predict_proba`. It does not call `fit`.
-
-## Run locally
-
-```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-python train_models.py
-streamlit run app.py
-```
-
-Pinned versions are in `requirements.txt` (Python 3.13, scikit-learn 1.9.1). `python train_models.py` prints the comparison table. On BITS Virtual Lab, run `retinopathy_classification.ipynb` or `python train_models.py` and screenshot that table. If the lab's scikit-learn is not 1.9.1, use that run for the screenshot only and do not replace the model files in this repository.
