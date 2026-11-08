@@ -8,9 +8,7 @@ Dataset: UCI Diabetic Retinopathy Debrecen (Messidor features)
 
 The task is to decide whether a Messidor fundus image contains signs of diabetic retinopathy. Each image is already reduced to 19 numeric measurements (lesion counts, a pre-screen flag, and a few anatomic measurements). The label is binary: `dr_signs = 1` if the image was graded as showing signs, and `0` if it was not.
 
-A majority-class guess is a weak baseline here. On the held-out split that guess is right only 53.25% of the time, because the two classes are close in size (540 images with no signs, 611 with signs). The comparison below therefore uses accuracy together with ROC AUC, precision, recall, F1, and Matthews correlation. Precision, recall, and F1 are computed for the positive class (signs present). AUC uses the saved model's predicted probability of that class.
-
-This is an academic model. It is not a screening device and it is not a diagnosis.
+A majority-class guess is right on 53.25% of the held-out rows. Precision, recall, and F1 below are for the positive class (signs present). AUC uses the predicted probability of that class.
 
 ## b. Dataset description
 
@@ -29,36 +27,11 @@ Size: **1,151 instances** and **19 features**. Both are above the assignment min
 | `am_fm_label` | Binary result of the AM/FM-based classifier included with the UCI file. |
 | `dr_signs` | Target. 1 = signs of diabetic retinopathy (Messidor grades 1, 2, or 3). 0 = no signs. |
 
-The six microaneurysm counts describe the same lesions at stricter thresholds, so they move together. The correlation between `ma_count_alpha_0_5` and `ma_count_alpha_1_0` is 0.860.
-
-Split used for every model: stratified 80/20, `random_state = 42`. That is 920 training rows and 231 test rows. The scaler is inside each model pipeline and is fit only on the training rows (and only on the training fold during the search). The 231 test rows are saved as `test_data.csv` and are not used to fit or to choose hyperparameters.
-
-Hyperparameters were chosen by stratified 5-fold cross-validation on the training rows, scoring ROC AUC.
+The microaneurysm counts move together: correlation between `ma_count_alpha_0_5` and `ma_count_alpha_1_0` is 0.860. Every model uses the same stratified 80/20 split (`random_state = 42`): 920 training rows and 231 test rows in `test_data.csv`. The scaler is fit on the training rows only. Settings were chosen by stratified 5-fold cross-validation on training ROC AUC.
 
 ## c. Github Repository Link
 
 https://github.com/darshikapundir/ml-assignment-2-messidor-dr
-
-Repository layout:
-
-```text
-app.py
-train_models.py
-metrics_utils.py
-requirements.txt
-README.md
-test_data.csv
-retinopathy_classification.ipynb
-data/messidor_retinopathy.csv
-model/logistic_regression.joblib
-model/decision_tree.joblib
-model/knn.joblib
-model/naive_bayes.joblib
-model/svm.joblib
-model/metrics.json
-```
-
-`train_models.py` fits the five classifiers. `app.py` only loads the `.joblib` pipelines and scores a CSV. It does not train again. Each pipeline contains its own `StandardScaler`, so there is no separate preprocessor file.
 
 ## d. Models used
 
@@ -71,14 +44,6 @@ All five models were fit on the same Messidor split. The test metrics below are 
 | KNN | 0.6190 | 0.6926 | 0.6667 | 0.5691 | 0.6140 | 0.2455 |
 | Naive Bayes | 0.6494 | 0.7178 | 0.6544 | 0.7236 | 0.6873 | 0.2924 |
 | Support Vector Machine | 0.7013 | 0.8066 | 0.7812 | 0.6098 | 0.6849 | 0.4205 |
-
-Settings selected on the training folds:
-
-- Logistic Regression: L2 logistic regression, `C = 10`, no class weight. 5-fold CV AUC 0.8163.
-- Decision Tree: `max_depth = 4`, `min_samples_leaf = 8`, no class weight. 5-fold CV AUC 0.6857.
-- KNN: 15 neighbors, distance weights, Minkowski distance, after scaling. 5-fold CV AUC 0.7010.
-- Naive Bayes: Gaussian NB, `var_smoothing = 1e-9`. 5-fold CV AUC 0.6865.
-- Support Vector Machine: RBF kernel, `C = 8`, `gamma = scale`, `class_weight = balanced`, with probability estimates so the app can compute AUC. 5-fold CV AUC 0.7994.
 
 ### Observations
 
